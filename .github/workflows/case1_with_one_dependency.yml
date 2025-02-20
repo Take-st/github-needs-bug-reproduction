@@ -1,0 +1,28 @@
+name: case1_with_single_dependency
+on:
+  workflow_dispatch:
+    inputs:
+      is-skip-jobA:
+        description: "Skip job A?"
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  jobA:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.is-skip-jobA }}
+    steps:
+      - run: echo "jobA"
+  jobB:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "jobB"
+  jobC:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    needs: [jobA, jobB]
+    steps:
+      - run: echo "jobC"
