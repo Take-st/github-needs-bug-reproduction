@@ -11,9 +11,9 @@ on:
 
 jobs:
   jobA:
+    if: ${{ !inputs.is-skip-jobA }}
     timeout-minutes: 5
     runs-on: ubuntu-latest
-    if: ${{ !inputs.is-skip-jobA }}
     steps:
       - run: echo "jobA"
   jobB:
@@ -22,8 +22,8 @@ jobs:
     steps:
       - run: echo "jobB"
   jobC:
+    needs: [jobA, jobB]
     timeout-minutes: 5
     runs-on: ubuntu-latest
-    needs: [jobA, jobB]
     steps:
       - run: echo "jobC"
