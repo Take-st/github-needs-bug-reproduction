@@ -1,0 +1,30 @@
+name: workaround_for_case1
+run-name: workaround for case1 with is-skip-jobA is ${{ inputs.is-skip-jobA }}
+on:
+  workflow_dispatch:
+    inputs:
+      is-skip-jobA:
+        description: "Skip job A?"
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  jobA:
+    if: ${{ !inputs.is-skip-jobA }}
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "jobA"
+  jobB:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "jobB"
+  jobC:
+    if: ${{ !failure() && !cancelled() }}
+    needs: [jobA, jobB]
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "jobC"
