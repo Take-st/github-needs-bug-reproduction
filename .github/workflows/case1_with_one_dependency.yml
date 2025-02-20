@@ -1,4 +1,5 @@
 name: case1_with_single_dependency
+run-name: case1_with_single_dependency with is-skip-jobA is ${{ inputs.is-skip-jobA }}
 on:
   workflow_dispatch:
     inputs:
