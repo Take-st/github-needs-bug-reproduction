@@ -1,11 +1,9 @@
 # github-needs-bug-reproduction
+Inspired by https://github.com/suzuki-shunsuke/bug-reproduction-github-actions-success.
 
-GitHub Actions の needs に関するトリッキーな挙動とそのワークアラウンドについて説明するレポジトリ。
+I will explain a bit tricky example of `needs` behavior in GitHub Actions and the workaround.
 
-## needs のトリッキーな挙動について
-
-
-## case1
+## case1 - What the tricky behavior is
 
 ```mermaid
 flowchart LR;
@@ -22,6 +20,8 @@ Whether jobA is executed or is skipped, jobC is executed.
 - (OK) When jobA is executed, jobC is executed.
 - (NG) When jobA is skipped, jobC is NOT executed.
 
+The jobC depended on jobA and jobB and jobA succeeded and jobB was skipped, then jobC was skipped.
+
 ## Workaround for case1
 [workflow file](.github/workflows/case1_workaround.yml)
 
@@ -31,7 +31,7 @@ Added `if: ${{ !failure() && !cancelled() }}` in jobC level.
 - (OK) When jobA is executed, jobC is executed.
 - (OK) When jobA is skipped, jobC is executed.
 
-## case2
+## case2: some jobs in the dependency chain
 
 ```mermaid
 flowchart LR;
@@ -49,10 +49,16 @@ Whether jobA is executed or is skipped, jobC, joD is executed since I added `if:
 - (OK) When jobA is executed, jobC and jobD are executed.
 - (NG) When jobA is skipped, jobC is executed but jobD is NOT.
 
+This is because of this.
+
+https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idneeds
+>  If a job fails or is skipped, all jobs that need it are skipped unless the jobs use a conditional expression that causes the job to continue. If a run contains a series of jobs that need each other, a failure or skip applies to all jobs in the dependency chain from the point of failure or skip onwards. ref
+
+
 ## Workaround for case2
 [workflow file](.github/workflows/case2_workaround1.yml)
 
-I needed to add `if: ${{ !failure() && !cancelled() }}` in every job level in the dependency chain.
+I need to add `if: ${{ !failure() && !cancelled() }}` in every job level in the dependency chain.
 
 ### Actual behavior
 - (OK) When jobA is executed, jobC and jobD are executed.
