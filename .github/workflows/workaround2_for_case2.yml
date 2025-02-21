@@ -1,5 +1,5 @@
-name: another_workaround_for_case2
-run-name: another around for case2 with is-skip-jobA is ${{ inputs.is-skip-jobA }}
+name: workaround2_for_case2
+run-name: another workaround for case2 with is-skip-jobA is ${{ inputs.is-skip-jobA }}
 on:
   workflow_dispatch:
     inputs:
