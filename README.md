@@ -62,6 +62,7 @@ I needed to add `if: ${{ !failure() && !cancelled() }}` in every job level in th
 [workflow file](.github/workflows/case2_workaround2.yml)
 
 Adding`if: ${{ !failure() && !cancelled() }}` in every job level is such a hassle and its maintainability is not good.
+
 It might be better to use this workaround2 instead.
 I wrote `if: \${{ !inputs.is-skip-jobA }}` at the step level instead of the job level.
 
