@@ -1,5 +1,5 @@
-name: workaround2_for_case2
-run-name: another workaround for case2 with is-skip-jobA is ${{ inputs.is-skip-jobA }}
+name: case2_workaround1
+run-name: workaround for case2 with is-skip-jobA is ${{ inputs.is-skip-jobA }}
 on:
   workflow_dispatch:
     inputs:
@@ -11,23 +11,25 @@ on:
 
 jobs:
   jobA:
+    if: ${{ !inputs.is-skip-jobA }}
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - run: echo "jobA"
-        if: ${{ !inputs.is-skip-jobA }}
   jobB:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - run: echo "jobB"
   jobC:
+    if: ${{ !failure() && !cancelled() }}
     needs: [jobA, jobB]
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - run: echo "jobC"
   jobD:
+    if: ${{ !failure() && !cancelled() }}
     needs: jobC
     timeout-minutes: 5
     runs-on: ubuntu-latest
