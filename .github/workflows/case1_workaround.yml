@@ -1,4 +1,4 @@
-name: workaround_for_case1
+name: case1_workaround
 run-name: workaround for case1 with is-skip-jobA is ${{ inputs.is-skip-jobA }}
 on:
   workflow_dispatch:
