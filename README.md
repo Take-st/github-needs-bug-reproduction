@@ -1,5 +1,5 @@
 # github-needs-bug-reproduction
-Inspired by https://github.com/suzuki-shunsuke/bug-reproduction-github-actions-success.
+Inspired by https://github.com/suzuki-shunsuke/bug-reproduction-github-actions-success
 
 I will explain a bit tricky example of `needs` behavior in GitHub Actions and the workaround.
 
