@@ -16,11 +16,11 @@ B[Job B]-->C;
 [workflow file](.github/workflows/case1_with_one_dependency.yml)
 
 ### Expected behavior
-jobA を実行してもスキップしても jobC が実行される。
+Whether jobA is executed or is skipped, jobC is executed.
 
 ### Actual behavior
-- (OK) jobA を実行したら jobC が実行される。
-- (NG) jobA をスキップしたら jobC は実行されない。
+- (OK) When jobA is executed, jobC is also executed.
+- (NG) When jobA is skipped, jobC is NOT executed.
 
 ## workaround for case1
 [workflow file](.github/workflows/case1_workaround.yml)
@@ -28,9 +28,5 @@ jobA を実行してもスキップしても jobC が実行される。
 Added `if: ${{ !failure() && !cancelled() }}` in jobC level.
 
 ### Actual behavior
-- (OK) jobA を実行したら jobC が実行される。
-- (OK) jobA をスキップしても jobC が実行される。
-
-## case2
-
-## workaround for case2
+- (OK) When jobA is executed, jobC is also executed.
+- (OK) When jobA is skipped, jobC is also executed.
