@@ -22,7 +22,7 @@ Whether jobA is executed or is skipped, jobC is executed.
 - (OK) When jobA is executed, jobC is executed.
 - (NG) When jobA is skipped, jobC is NOT executed.
 
-## workaround for case1
+## Workaround for case1
 [workflow file](.github/workflows/case1_workaround.yml)
 
 Added `if: ${{ !failure() && !cancelled() }}` in jobC level.
@@ -49,10 +49,21 @@ Whether jobA is executed or is skipped, jobC, joD is executed since I added `if:
 - (OK) When jobA is executed, jobC and jobD are executed.
 - (NG) When jobA is skipped, jobC is executed but jobD is NOT.
 
-## workaround for case2
+## Workaround for case2
 [workflow file](.github/workflows/case2_workaround1.yml)
 
 I needed to add `if: ${{ !failure() && !cancelled() }}` in every job level in the dependency chain.
+
+### Actual behavior
+- (OK) When jobA is executed, jobC and jobD are executed.
+- (OK) When jobA is skipped, jobC and jobD are executed.
+
+## Another workaround for case2
+[workflow file](.github/workflows/case2_workaround2.yml)
+
+Adding`if: ${{ !failure() && !cancelled() }}` in every job level is such a hassle and its maintainability is not good.
+It might be better to use this workaround2 instead.
+I wrote `if: \${{ !inputs.is-skip-jobA }}` at the step level instead of the job level.
 
 ### Actual behavior
 - (OK) When jobA is executed, jobC and jobD are executed.
